@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions._
 
-trait functions2 { // to be extended
+trait functions { // to be extended
   //Method used to retrieve the time taken in seconds
   def getDateDiff(date1:Date,date2:Date,timeUnit:TimeUnit)= {
     val diffInSeconds = date2.getTime() - date1.getTime()

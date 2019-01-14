@@ -10,7 +10,7 @@ import org.apache.spark.storage.StorageLevel
 /**
   * Created by Pietro.Speri on 12/01/2019.
   */
-object simpleProfiler2 extends LazyLogging with functions2 {
+object simpleProfiler extends LazyLogging with functions {
   def main(args: Array[String]) {
     //Start time
     val startTime= new Date
