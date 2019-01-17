@@ -40,13 +40,13 @@ object profiling {
     //  timeUnit.convert(diffInSeconds,TimeUnit.SECONDS)
     //}
 
-    def profiler(db: => String)(table: => String)(col: => String, cache: =>String)={
+    def profiler(db: => String)(table: => String)(col: => String)(cache: =>String)={
       val sep="|"
       println("[CREATING RDD]")
       def rddGen(cache:String)= {
         cache.trim.toUpperCase match {
-          case "Y" => sqlContext.table(db + "." + table).select(col).rdd.persist(StorageLevel.MEMORY_AND_DISK)
           case "N" => sqlContext.table(db + "." + table).select(col).rdd
+          case _ => sqlContext.table(db + "." + table).select(col).rdd.persist(StorageLevel.MEMORY_AND_DISK)
         }
       }
       val rdd=rddGen(cache)
@@ -66,11 +66,11 @@ object profiling {
       val minLength=rdd.reduce((a,b)=>if(a.mkString.length<b.mkString.length) a else b).mkString.length
       println("[UNPERSISTING RDD]")
       rdd.unpersist()
-      println(db+sep+table+sep+col+sep+isDistinct+sep+withBlanks+sep+hasNull+sep+maxLength+sep+minLength)
+      db+sep+table+sep+col+sep+isDistinct+sep+withBlanks+sep+hasNull+sep+maxLength+sep+minLength
     }
 
     println("[LAUNCHING THE PROFILER]")
-    profiler(db.mkString)(table.mkString)(column.mkString,cache.mkString)
+    profiler(db.mkString)(table.mkString)(column.mkString)(cache.mkString)
 
     //val endTime= new Date
     //val units=TimeUnit.SECONDS
