@@ -19,7 +19,7 @@ object simpleProfiler extends LazyLogging with functions {
     //Inputs
     val db=args(0).trim
     val table=args(1).trim
-    val column=args(3).trim
+    val column=args(2).trim
     logger.info("[ARGUMENTS PASSED: ]"+args.foreach(println))
 
     //Spark configuration
