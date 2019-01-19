@@ -36,13 +36,17 @@ object profiling {
 
     def profiler(db: => String)(table: => String)(col: => String)(cache: =>String)={
       val sep="|"
+      val df= sqlContext.table(db + "." + table).select(col)
       def rddGen(cache:String)= {
         cache.trim.toUpperCase match {
-          case "N" => sqlContext.table(db + "." + table).select(col).rdd
-          case _ => sqlContext.table(db + "." + table).select(col).rdd.persist(StorageLevel.MEMORY_AND_DISK)
+          case "N" => df.rdd
+          case _ => df.rdd.persist(StorageLevel.MEMORY_AND_DISK)
         }
       }
       val rdd=rddGen(cache)
+      if(rdd.isEmpty()){
+        println(db+sep+table+sep+col+sep+"EMPTY"+sep+"EMPTY"+sep+"EMPTY"+sep+"EMPTY"+sep+"EMPTY")
+        System.exit(1)}
       val count=rdd.count
       val distinctCount=rdd.distinct.count
       val isDistinct=if(count==distinctCount)"TRUE" else "FALSE"
