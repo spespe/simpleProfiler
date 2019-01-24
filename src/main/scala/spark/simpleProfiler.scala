@@ -21,7 +21,7 @@ object profiling {
     val cache=args(3).trim
 
     //Spark configuration
-    val conf = new org.apache.spark.SparkConf()
+    val conf = new org.apache.spark.SparkConf().setAppName("Profiler")
     val sc = new SparkContext(conf)
     val sqlContext = new org.apache.spark.sql.hive.HiveContext(sc)
 
