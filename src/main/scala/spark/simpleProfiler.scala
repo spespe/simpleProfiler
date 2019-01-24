@@ -55,6 +55,8 @@ object profiling {
       val hasNull=rdd.filter(x=>x!=null).isEmpty.toString.toUpperCase
       val maxLength=rdd.reduce((a,b)=>if(a.mkString.length>b.mkString.length && a!=null && b!=null) a else b).mkString.length
       val minLength=rdd.reduce((a,b)=>if(a.mkString.length<b.mkString.length && a!=null && b!=null) a else b).mkString.length
+      val maxLengthTrimmed=rdd.reduce((a,b)=>if(a.mkString.length.trim>b.mkString.length.trim && a!=null && b!=null) a else b).mkString.length
+      val minLengthTrimmed=rdd.reduce((a,b)=>if(a.mkString.length.trim<b.mkString.length.trim && a!=null && b!=null) a else b).mkString.length
       rdd.unpersist()
       println(db+sep+table+sep+col+sep+isDistinct+sep+withBlanks+sep+hasNull+sep+maxLength+sep+minLength)
     }
