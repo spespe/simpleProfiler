@@ -34,24 +34,6 @@ object profiling {
     //  timeUnit.convert(diffInSeconds,TimeUnit.SECONDS)
     //}
 
-    def profiler2(db: => String)(table: => String)(col: => String)={
-      val sep="|"
-	     println("creating RDD")
-      val rdd=sqlContext.table(db+"."+table).select(col).rdd.persist(StorageLevel.MEMORY_AND_DISK)
-	     println("PERFORMING COUNT")
-	     val count=rdd.count
-	     println("Performing distinct")
-      val distinctCount=rdd.distinct.count
-      val isDistinct=if(count==distinctCount)"TRUE" else "FALSE"
-      val blanks=rdd.filter(x=>x.mkString.isEmpty).count
-      val withBlanks=if(blanks==0)"FALSE" else "TRUE"
-      val hasNull=rdd.filter(x=>x!=null).isEmpty.toString.toUpperCase
-      val maxLength=rdd.reduce((a,b)=>if(a.mkString.length>b.mkString.length) a else b).mkString.length
-      val minLength=rdd.reduce((a,b)=>if(a.mkString.length<b.mkString.length) a else b).mkString.length
-      rdd.unpersist()
-      println(db+sep+table+sep+col+sep+isDistinct+sep+withBlanks+sep+hasNull+sep+maxLength+sep+minLength)
-    }
-   
     def profiler(db: => String)(table: => String)(col: => String)(cache: =>String)={
       val sep="|"
       val df= sqlContext.table(db + "." + table).select(col)
